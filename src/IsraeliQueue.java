@@ -43,9 +43,6 @@ public class IsraeliQueue<Type> implements Iterable<Type> {
         //Case in which friend was not found.
         tail.setNext(new Node<>(new Node<>(value)));
         tail = tail.getNext();
-
-
-
     }
 
     public void add(Type value){
@@ -73,7 +70,6 @@ public class IsraeliQueue<Type> implements Iterable<Type> {
         if(queueSize == 0)
             throw new EmptyQueueException();
         return head;
-
     }
 
     public int size() {
@@ -119,9 +115,7 @@ public class IsraeliQueue<Type> implements Iterable<Type> {
             }
 
             public boolean groupsEnd(){
-
                 return currValue.getNext() == null;
-
             }
 
             public boolean tailReached(){
