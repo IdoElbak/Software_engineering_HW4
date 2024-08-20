@@ -1,14 +1,14 @@
 import java.util.Iterator;
 
-public class IsrealiQueue<Type> implements Iterable<Type> {
+public class IsraeliQueue<Type> implements Iterable<Type> {
 
     private Node<Node<Type>> head;
     private Node<Node<Type>> tail;
     private int queueSize;
 
 
-    public IsrealiQueue() {}
-    public IsrealiQueue(Type head) {
+    public IsraeliQueue() {}
+    public IsraeliQueue(Type head) {
         this.head = new Node<>(new Node<>(head));
         this.tail = this.head;
     }
@@ -81,9 +81,9 @@ public class IsrealiQueue<Type> implements Iterable<Type> {
     }
 
     @Override
-    protected IsrealiQueue<Type> clone() {
+    protected IsraeliQueue<Type> clone() {
 
-        IsrealiQueue <Type> clone = new IsrealiQueue<>();
+        IsraeliQueue<Type> clone = new IsraeliQueue<>();
         clone.head = new Node<>(new Node<>(this.head.getValue().getValue()));
         return clone;
     }
