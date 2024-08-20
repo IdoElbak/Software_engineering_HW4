@@ -1,6 +1,6 @@
-import java.lang.reflect.InvocationTargetException;
+import java.util.Iterator;
 
-public class Node<E>{
+public class Node<E> implements Cloneable{
     private E value;
     private Node<E> next;
     public Node(E value, Node<E> next) {
@@ -32,5 +32,19 @@ public class Node<E>{
         if (this.next == null)
             return false;
         return next.isContained(other);
+    }
+
+    public Node<E> clone(){
+        Node<E> cloneNode = new Node<>(this.value);
+        Node<E> cloneTemp = cloneNode;
+        Node<E> temp = this;
+
+        while(temp != null){
+            cloneNode.setNext(new Node<>(temp.getValue()));
+            cloneTemp = cloneTemp.getNext();
+            temp = temp.getNext();
+        }
+
+        return cloneNode;
     }
 }
