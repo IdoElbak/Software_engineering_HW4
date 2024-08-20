@@ -1,4 +1,4 @@
-public class Person {
+public class Person implements Cloneable{
 
     private String name;
     private final int ID;
@@ -22,5 +22,12 @@ public class Person {
         }
 
         return false;
+    }
+
+
+    /**Clones the person*/
+    @Override
+    public Person clone() {
+        return new Person(this.name,this.ID,this.friend);
     }
 }
