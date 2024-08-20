@@ -1,13 +1,15 @@
 import java.util.*;
 
 public class Park {
-
+    private static int MAX_RIDES = 5;
     private String name;
-    private ArrayList<AmusementRide> rides;
+    private AmusementRide[] rides;
+    private int ride_count;
 
     public Park(String name){
         this.name = name;
-        this.rides = new ArrayList<AmusementRide>();
+        this.rides = new AmusementRide[MAX_RIDES];
+        this.ride_count = 0;
     }
 
     /**
@@ -15,7 +17,10 @@ public class Park {
      * @param newRide - the new ride that needs to be added to the park
      */
     public void add(AmusementRide newRide){
-        rides.add(newRide);
+        if(ride_count != 5) {
+            rides[ride_count] = newRide;
+            ride_count++;
+        }
     }
 
     /**
@@ -23,9 +28,15 @@ public class Park {
      * @param ride - the ride that needs to be removed
      */
     public void remove(AmusementRide ride){
-        for(AmusementRide tempRide : rides){
-            if(tempRide == ride){
-                rides.remove(tempRide);
+        boolean removedRide = false;
+        for(int i = 0; i < MAX_RIDES && rides[i] != null; i++){
+            if(rides[i] == ride){
+                rides[i] = null;
+                removedRide = true;
+                ride_count--;
+            }
+            if(removedRide && (i != MAX_RIDES-1)){
+                rides[i] = rides[i+1];
             }
         }
     }
@@ -35,6 +46,9 @@ public class Park {
      */
     public void startRides(){
         for(AmusementRide ride : rides){
+            if(ride == null){
+                break;
+            }
             ride.startRide();
         }
     }

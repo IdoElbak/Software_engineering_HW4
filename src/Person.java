@@ -24,10 +24,27 @@ public class Person implements Cloneable{
         return false;
     }
 
+    @Override
+    public int hashCode() {
+        return this.ID;
+    }
+
+    public Person getFriend(){
+        return friend;
+    }
 
     /**Clones the person*/
     @Override
-    public Person clone() {
-        return new Person(this.name,this.ID,this.friend);
+    public Person clone(){
+        try {
+            Person clone = (Person) super.clone();
+            if(this.friend != null) {
+                clone.friend = this.friend.clone();
+            }
+            return clone;
+        }
+        catch (CloneNotSupportedException e){
+            return null;
+        }
     }
 }

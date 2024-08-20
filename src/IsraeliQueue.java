@@ -28,14 +28,19 @@ public class IsraeliQueue<Type extends Cloneable> implements Iterable<Type>, Clo
      * <br>
      * Otherwise, a new group is opened at the end of the queue, with only {@code value} in it.*/
     public void add(Type value, Type friendValue){
-
+        if(value == null){
+            throw new InvalidInputException();
+        }
         Node<Node<Type>> temp = head;
-        while(temp.getNext() != null){
+        while(temp != null){
 
             //Checks if friendValue is found in the currently checked group.
             if(temp.getValue().isContained(friendValue)){
-                appendToGroupTail(temp.getValue(), friendValue);
+                appendToGroupTail(temp.getValue(), value);
+                this.size++;
+                return;
             }
+            temp = temp.getNext();
 
         }
 
@@ -49,9 +54,16 @@ public class IsraeliQueue<Type extends Cloneable> implements Iterable<Type>, Clo
      * Adds a value to a new group at the end of the queue.
      * */
     public void add(Type value){
-
-        this.tail.setNext(new Node<>(new Node<>(value)));
-        this.tail = this.tail.getNext();
+        if(value == null){
+            throw new InvalidInputException();
+        }
+        if(this.tail == null){
+            this.head = new Node<>(new Node<>(value));
+            this.tail = this.head;
+        }else {
+            this.tail.setNext(new Node<>(new Node<>(value)));
+            this.tail = this.tail.getNext();
+        }
         this.size++;
 
     }
@@ -59,17 +71,18 @@ public class IsraeliQueue<Type extends Cloneable> implements Iterable<Type>, Clo
     /**Removes the head group from the queue and returns the group.
      * @throws EmptyQueueException If the queue is empty.*/
     public Type remove() throws EmptyQueueException{
-
         if(this.size == 0)
             throw new EmptyQueueException();
+        size--;
 
         Type value = head.getValue().getValue();
-        if(this.head.getNext() == null){
-            size--;
+        if(this.head.getValue().getNext() == null){
             this.head = this.head.getNext();
+        }else {
+            this.head.setValue(this.head.getValue().getNext());
         }
-        this.head.setValue(this.head.getValue().getNext());
-
+        if(head == null)
+            tail = null;
         return value;
 
     }
@@ -104,34 +117,29 @@ public class IsraeliQueue<Type extends Cloneable> implements Iterable<Type>, Clo
         return new Iterator<Type>() {
 
             //Stores the current group which is being iterated over.
-            Node<Node<Type>> currGroup = head;
+            Node<Node<Type>> nextGroup = head.getNext();
 
             //Stores the current value in currGroup which is being iterated over.
-            Node<Type> currValue = head.getValue();
+            Node<Type> nextValue = head.getValue();
 
             @Override
             public boolean hasNext() {
-                if(currValue.getNext() != null)
-                    return false;
+                if(nextValue != null)
+                    return true;
 
-                return currGroup.getNext() != null;
+                return nextGroup != null;
             }
 
             @Override
             public Type next() {
-                if(currValue.getNext() == null){
-
-                    currGroup = currGroup.getNext();
-                    if(currGroup.getNext() == null)
-                        return null;
-
-                    currValue = currGroup.getValue();
+                if(nextValue == null){
+                    nextValue = nextGroup.getValue();
+                    nextGroup = nextGroup.getNext();
                 }
+                Type value = nextValue.getValue();
+                nextValue = nextValue.getNext();
 
-                else currValue = currValue.getNext();
-
-                return currValue.getValue();
-
+                return value;
             }
 
         };
@@ -139,43 +147,29 @@ public class IsraeliQueue<Type extends Cloneable> implements Iterable<Type>, Clo
 
     /**Appends {@code value} to the end of {@code group}.*/
     private void appendToGroupTail(Node<Type> group, Type value){
-
         Node<Type> temp = group;
         while (temp.getNext() != null)
             temp = temp.getNext();
 
-        temp.setNext(new Node<>(value));
-
+        temp.setNext(new Node<Type>(value));
     }
 
     /**Clones the queue in a deep-clone approach.*/
     @Override
     public IsraeliQueue<Type> clone() {
+        try {
+            IsraeliQueue<Type> cloneQueue = (IsraeliQueue<Type>)super.clone();
 
-        IsraeliQueue<Type> cloneQueue = new IsraeliQueue<>();
-
-        //Clone the queue's head.
-        cloneQueue.head = this.head.clone();
-
-        Node<Node<Type>> cloneTemp = cloneQueue.head;
-        Node<Node<Type>> temp = this.head;
-
-        //Note that the check temp != this.tail is valid.
-        //This is because temp iterates over the original list.
-        //Once it reaches tail, temp will be a pointer to tail, meaning that temp != this.tail will be false.
-        while(temp != this.tail){
-
-            //Clone the queue's content except the head and tail.
-            cloneTemp.setNext(temp.getNext().clone());
-            temp = temp.getNext();
-
+            if(head != null) {
+                //Clone the queue's head.
+                cloneQueue.head = this.head.clone();
+                cloneQueue.tail = this.tail.clone();
+            }
+            return cloneQueue;
         }
-
-        //Clone the queue's tail.
-        cloneTemp.setNext(this.tail.clone());
-        cloneQueue.tail = cloneTemp.getNext();
-
-        return cloneQueue;
+        catch (Exception e){
+            return null;
+        }
 
     }
 }

@@ -35,16 +35,16 @@ public class Node<E> implements Cloneable{
     }
 
     public Node<E> clone(){
-        Node<E> cloneNode = new Node<>(this.value);
-        Node<E> cloneTemp = cloneNode;
-        Node<E> temp = this;
-
-        while(temp != null){
-            cloneNode.setNext(new Node<>(temp.getValue()));
-            cloneTemp = cloneTemp.getNext();
-            temp = temp.getNext();
+        try {
+            Node<E> cloneNode = (Node<E>) super.clone();
+            cloneNode.value = (E)(this.value.getClass().getMethod("clone").invoke(this.value));
+            if(this.next != null){
+                cloneNode.next = next.clone();
+            }
+            return cloneNode;
         }
-
-        return cloneNode;
+        catch (Exception e){
+            return null;
+        }
     }
 }
