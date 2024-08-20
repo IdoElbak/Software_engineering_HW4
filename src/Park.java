@@ -25,6 +25,8 @@ public class Park {
 
     /**
      * This function gets a ride and removes it from the list of rides
+     * Afterward, the function moves the entire rides array 1 slot back from the removal spot.
+     * So the array won't have null in between rides.
      * @param ride - the ride that needs to be removed
      */
     public void remove(AmusementRide ride){
@@ -53,6 +55,11 @@ public class Park {
         }
     }
 
+    /**
+     * This function gets a person and the ride he wants to enter and adds him to that ride's queue.
+     * @param ride - the ride which the person wants to ride
+     * @param person - the person that wants to be added to the ride's queue.
+     */
     public void addPerson(AmusementRide ride, Person person){
         for(AmusementRide tempRide : rides){
             if(tempRide == ride){

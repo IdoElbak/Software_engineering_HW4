@@ -13,6 +13,7 @@ public class AmusementRide {
     /**
      * This function checks if the line to the ride is empty and if not it starts the ride.
      * After starting the ride the function prints the names of the people on the ride.
+     * And removes the people that went on the ride from the queue.
      */
     public void startRide(){
         if(queue.size() == 0){
@@ -29,6 +30,11 @@ public class AmusementRide {
 
     }
 
+    /**
+     * This function gets that person's friend and adds him to the IsraeliQueue based on his friend.
+     * If there is no friend then it doesn't matter because the "add" function takes that case into account.
+     * @param person - a person that wants to go on a ride.
+     */
     public void addPerson(Person person){
         Person friend = person.getFriend();
         this.queue.add(person, friend);

@@ -6,9 +6,9 @@ import java.util.Iterator;
  * <br><br>
  * Rational for design:
  * <br>
- * The israeli queue is a queue of groups of objects, with the ability to add an object to an existing or new group.
+ * The Israeli queue is a queue of groups of objects, with the ability to add an object to an existing or new group.
  * The implementation is required using {@link Node} as the only additional data structure,
- * and therefore, a group is represented via the {@code Node<Node<Type>>} datatype.
+ * And therefore, a group is represented via the {@code Node<Node<Type>>} datatype.
  * */
 public class IsraeliQueue<Type extends Cloneable> implements Iterable<Type>, Cloneable{
 
@@ -18,8 +18,7 @@ public class IsraeliQueue<Type extends Cloneable> implements Iterable<Type>, Clo
     /**Tail group of the queue*/
     private Node<Node<Type>> tail;
 
-    /**The group's size. Note that since an israeli queue considers a group to be a value,
-     * this attribute refers to the number of groups in the queue.*/
+    /**the amount of elements in the queue*/
     private int size;
 
     /**Adds a value to a group as following:
@@ -43,11 +42,10 @@ public class IsraeliQueue<Type extends Cloneable> implements Iterable<Type>, Clo
             temp = temp.getNext();
 
         }
-
         //In this case, we reach the end of the list, and should open a new group.
         //add(value) does this, and so we call it to avoid repetitive code.
+        // also reaches here when the head == null. add(value) initializes the head and tail if needed.
         add(value);
-
     }
 
     /**
@@ -116,10 +114,10 @@ public class IsraeliQueue<Type extends Cloneable> implements Iterable<Type>, Clo
 
         return new Iterator<Type>() {
 
-            //Stores the current group which is being iterated over.
+            //Stores the next group that will be iterated over.
             Node<Node<Type>> nextGroup = head.getNext();
 
-            //Stores the current value in currGroup which is being iterated over.
+            //Stores the next value in current group which is being iterated over.
             Node<Type> nextValue = head.getValue();
 
             @Override

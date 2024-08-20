@@ -30,6 +30,7 @@ public class Person implements Cloneable{
     }
 
     public Person getFriend(){
+        // returns the person's friend
         return friend;
     }
 
